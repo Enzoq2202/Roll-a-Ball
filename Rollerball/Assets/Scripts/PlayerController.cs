@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 
 public class PlayerController : MonoBehaviour
@@ -17,6 +18,8 @@ public class PlayerController : MonoBehaviour
     public float speed = 0;
 
     private int count;
+
+    [SerializeField] private string SceneName;
 
     // Start is called before the first frame update
     void Start()
@@ -43,6 +46,7 @@ public class PlayerController : MonoBehaviour
         if (count >= 12)
         {
             winTextObject.SetActive(true);
+            SceneManager.LoadScene(SceneName);
         }
     }
 
