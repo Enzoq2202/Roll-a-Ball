@@ -10,12 +10,13 @@ public class MenuManager : MonoBehaviour
     
     public void StartGame()
     {
+        Debug.Log("Start Game called");
         SceneManager.LoadScene(SceneName);
     }
-
     public void QuitGame()
     {
-        Debug.Log("Quit Game");
+        Debug.Log("Quit Game called");
         Application.Quit();
     }
+
 }
