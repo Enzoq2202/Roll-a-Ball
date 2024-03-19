@@ -7,16 +7,24 @@ public class RestartGame : MonoBehaviour
 {
     public void ResetTheGame()
     {
-        // Carrega a cena atual
+        // Prepara o cursor para a jogabilidade, se necessário
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         SceneManager.LoadScene("Minigame");
         print("Game Restarted");
     }
 
+
     public void QuitGame()
     {
-        // Sai do jogo
+        // Antes de sair, garante que o cursor seja visível
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         print("Game Quit");
         Application.Quit();
     }
+
     
 }

@@ -15,8 +15,13 @@ public class MenuManager : MonoBehaviour
     }
     public void QuitGame()
     {
-        Debug.Log("Quit Game called");
+        // Antes de sair, garante que o cursor seja visível
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        print("Game Quit");
         Application.Quit();
     }
+
 
 }
