@@ -15,7 +15,6 @@ public class MenuManager : MonoBehaviour
     }
     public void QuitGame()
     {
-        // Antes de sair, garante que o cursor seja visível
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 

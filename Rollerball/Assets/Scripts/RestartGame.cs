@@ -7,7 +7,6 @@ public class RestartGame : MonoBehaviour
 {
     public void ResetTheGame()
     {
-        // Prepara o cursor para a jogabilidade, se necessário
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
@@ -18,7 +17,6 @@ public class RestartGame : MonoBehaviour
 
     public void QuitGame()
     {
-        // Antes de sair, garante que o cursor seja visível
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 

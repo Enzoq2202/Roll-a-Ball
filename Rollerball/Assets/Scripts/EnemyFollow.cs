@@ -2,18 +2,17 @@ using UnityEngine;
 
 public class EnemyFollow : MonoBehaviour
 {
-    public Transform playerTransform; // Referência à transformação do jogador
-    public float speed = 5.0f; // Velocidade com que o inimigo segue o jogador
+    public Transform playerTransform; 
+    public float speed = 5.0f; 
+    public float avoidanceRadius = 1.5f; 
+    public LayerMask enemyLayer; 
 
-    private Rigidbody rb; // Rigidbody do inimigo
-    private float fixedYPosition; // Posição Y fixa para o inimigo
+    private Rigidbody rb; 
+    private float fixedYPosition; 
 
     void Start()
     {
-        // Guarda a posição Y inicial do inimigo para mantê-la constante
         fixedYPosition = transform.position.y;
-
-        // Obtém o componente Rigidbody do inimigo
         rb = GetComponent<Rigidbody>();
     }
 
@@ -21,24 +20,44 @@ public class EnemyFollow : MonoBehaviour
     {
         if (playerTransform != null)
         {
-            // Calcula a direção para o jogador, mas mantém a posição Y do inimigo constante
-            Vector3 direction = new Vector3(playerTransform.position.x, fixedYPosition, playerTransform.position.z) - transform.position;
-            direction.y = 0; // Certifica-se de que a direção é apenas no plano XZ
-            direction.Normalize(); // Normaliza para garantir que o movimento tenha velocidade constante
-
-            // Calcula a nova velocidade do inimigo
+            Vector3 direction = CalculateDirectionWithAvoidance();
+            direction.y = 0; 
+            direction.Normalize(); 
             Vector3 newVelocity = direction * speed;
-
-            // Aplica a velocidade ao Rigidbody
             rb.velocity = new Vector3(newVelocity.x, rb.velocity.y, newVelocity.z);
-
-            // Rotação
-            if (rb.velocity.magnitude > 0.1f) // Apenas roda se estiver se movendo
+            if (newVelocity.magnitude > 0.1f)
             {
-                float rotationMagnitude = rb.velocity.magnitude;
-                Vector3 rotationDirection = Vector3.Cross(Vector3.up, rb.velocity).normalized;
-                rb.angularVelocity = rotationDirection * rotationMagnitude;
+                float rotationScale = 0.02f; 
+                float rotationMagnitude = newVelocity.magnitude * rotationScale;
+                Vector3 rotationDirection = Vector3.Cross(Vector3.up, newVelocity).normalized;
+                rb.angularVelocity = rotationDirection * rotationMagnitude * Mathf.Rad2Deg;
+            }
+            else
+            {
+                rb.angularVelocity = Vector3.zero;
             }
         }
+    }
+
+
+    Vector3 CalculateDirectionWithAvoidance()
+    {
+        Vector3 directionToPlayer = new Vector3(playerTransform.position.x, fixedYPosition, playerTransform.position.z) - transform.position;
+
+        Collider[] hits = Physics.OverlapSphere(transform.position, avoidanceRadius, enemyLayer);
+        Vector3 avoidanceVector = Vector3.zero;
+        foreach (var hit in hits)
+        {
+            if (hit.gameObject != gameObject) 
+            {
+                avoidanceVector += (transform.position - hit.transform.position);
+            }
+        }
+        if (hits.Length > 1) 
+        {
+            directionToPlayer += avoidanceVector;
+        }
+
+        return directionToPlayer;
     }
 }

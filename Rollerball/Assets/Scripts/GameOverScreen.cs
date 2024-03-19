@@ -6,14 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class GameOverScreen : MonoBehaviour
 {
-    public Text scoreText; // Corrigido de 'text' para 'Text'
+    public Text scoreText; 
 
     public void Setup(int score)
     {
         gameObject.SetActive(true);
         scoreText.text = score.ToString() + " Points";
-
-        // Libera o cursor e o torna visível
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
