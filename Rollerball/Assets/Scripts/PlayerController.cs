@@ -47,6 +47,22 @@ public class PlayerController : MonoBehaviour
     }
 
 
+    void CheckBounds()
+    {
+        // Defina os limites do mapa aqui. Ajuste os valores de acordo com o seu jogo.
+        // float minX = -20f; // Limite mínimo em X
+        // float maxX = 20f;  // Limite máximo em X
+        float minY = 0f;  // Limite mínimo em Y (para detectar quedas)
+        // float minZ = -20f; // Limite mínimo em Z
+        // float maxZ = 20f;  // Limite máximo em Z
+
+        if (transform.position.y < minY)
+        {
+            Debug.Log("Jogador saiu do mapa!");
+            GameOver();
+        }
+    }
+
     void Update()
     {
         float timeLeft = timeLimit - (Time.time - startTime);
@@ -58,6 +74,7 @@ public class PlayerController : MonoBehaviour
         {
             UpdateTimerText(timeLeft);
         }
+        CheckBounds();
     }
 
     void OnMove(InputValue movementValue)
